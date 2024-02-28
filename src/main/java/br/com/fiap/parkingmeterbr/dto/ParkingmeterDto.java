@@ -1,6 +1,7 @@
 package br.com.fiap.parkingmeterbr.dto;
 
 import br.com.fiap.parkingmeterbr.model.Parkingmeter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ParkingmeterDto extends ParkingmeterRequest {
 
+    @Schema(name = "code", type = "String", description = "Código do parquímetro", requiredMode = Schema.RequiredMode.AUTO ,example = "f679af614f1810e505df08eac609c16c")
     private String code;
 
 

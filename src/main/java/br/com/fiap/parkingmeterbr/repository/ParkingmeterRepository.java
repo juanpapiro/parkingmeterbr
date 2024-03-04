@@ -16,7 +16,7 @@ public interface ParkingmeterRepository extends JpaRepository<Parkingmeter, Stri
     @Transactional
     @Query(value = "INSERT INTO tbparkingmeters (code, street, number, zipcode, neighborhood, city, uf, dt_create)" +
             "values (:code, :street, :number, :zipcode, :neighborhood, :city, :uf, :dtCreate)", nativeQuery = true)
-    Object createParkingmeter(@Param("code") String code, @Param("street") String street, @Param("number") Integer number,
+    Integer createParkingmeter(@Param("code") String code, @Param("street") String street, @Param("number") Integer number,
                       @Param("zipcode") String zipcode, @Param("neighborhood") String neighborhood, @Param("city") String city,
                       @Param("uf") String uf, @Param("dtCreate") LocalDateTime dtCreate);
 

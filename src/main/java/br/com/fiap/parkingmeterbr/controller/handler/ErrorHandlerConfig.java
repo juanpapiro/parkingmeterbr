@@ -1,7 +1,9 @@
-package br.com.fiap.parkingmeterbr.controller.config;
+package br.com.fiap.parkingmeterbr.controller.handler;
 
 import br.com.fiap.parkingmeterbr.dto.ErrorApi;
 import br.com.fiap.parkingmeterbr.dto.ErrorValidation;
+import br.com.fiap.parkingmeterbr.exception.ParkingmeterNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -31,6 +33,16 @@ public class ErrorHandlerConfig {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorApi> handleErrorPK(DataIntegrityViolationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorApi("Erro de duplicidade!"));
+    }
+    
+    @ExceptionHandler(ParkingmeterNotFoundException.class)
+    public ResponseEntity<ErrorApi> handleParkingNotFound(ParkingmeterNotFoundException e) {
+    	return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorApi> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(new ErrorApi(e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

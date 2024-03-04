@@ -1,22 +1,19 @@
-package br.com.fiap.parkingmeterbr.controller.config.swagger;
+package br.com.fiap.parkingmeterbr.controller.swagger;
 
-import br.com.fiap.parkingmeterbr.dto.ErrorApi;
-import br.com.fiap.parkingmeterbr.dto.PageParkingmeterDto;
-import br.com.fiap.parkingmeterbr.dto.ParkingmeterDto;
-import br.com.fiap.parkingmeterbr.dto.ParkingmeterRequest;
+import java.util.List;
+
+import br.com.fiap.parkingmeterbr.dto.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Parquímetros")
 public interface ParkingmeterControllerOpenApi {
@@ -54,6 +51,17 @@ public interface ParkingmeterControllerOpenApi {
     )
     @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
     ResponseEntity<ParkingmeterDto> createParkingmeter(@RequestBody ParkingmeterRequest request);
+
+
+
+    @Operation(summary = "Consulta de endereço por CEP", description = "Consulte o endereço por CEP")
+    @ApiResponse(
+            responseCode = "200",
+            content = {@Content(schema = @Schema(implementation = AddressDto.class), mediaType = MediaType.APPLICATION_JSON_VALUE)}
+    )
+    @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())})
+    @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    public ResponseEntity<AddressDto> findAddressByCep(String cep);
 
 
 }

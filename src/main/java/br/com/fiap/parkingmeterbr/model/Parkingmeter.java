@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(ParkingmeterPK.class)
-public class Parkingmeter {
+public class Parkingmeter implements Serializable {
 
     @Id
     @Column(name = "code", nullable = false, unique = true)

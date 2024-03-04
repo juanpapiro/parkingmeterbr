@@ -12,5 +12,17 @@ services:
         - ./script-database.sql:/docker-entrypoint-initdb.d/script-database.sql
         - vlpsqldb:/var/lib/postgresql/data
 
+    redisparkbr:
+      container_name: redisparkbr
+      image: redis:latest
+      restart: always
+      ports:
+        - "6379:6379"
+#      volumes:
+#        - redisparkbr:/root/redis
+#        - redisparkbr:/usr/local/etc/redis/redis.conf
+
+
 volumes:
   vlpsqldb:
+#  redisparkbr:

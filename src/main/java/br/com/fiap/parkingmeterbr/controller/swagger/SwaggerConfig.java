@@ -1,4 +1,4 @@
-package br.com.fiap.parkingmeterbr.controller.config.swagger;
+package br.com.fiap.parkingmeterbr.controller.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

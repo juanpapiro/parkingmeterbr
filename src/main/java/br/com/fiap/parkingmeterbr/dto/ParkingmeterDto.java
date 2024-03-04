@@ -4,25 +4,27 @@ import br.com.fiap.parkingmeterbr.model.Parkingmeter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ParkingmeterDto extends ParkingmeterRequest {
+@NoArgsConstructor
+public class ParkingmeterDto extends ParkingmeterRequest implements Serializable{
 
-    @Schema(name = "code", type = "String", description = "Código do parquímetro", requiredMode = Schema.RequiredMode.AUTO ,example = "f679af614f1810e505df08eac609c16c")
+
+	private static final long serialVersionUID = 1L;
+	
+	@Schema(name = "code", type = "String", description = "Código do parquímetro", requiredMode = Schema.RequiredMode.AUTO ,example = "f679af614f1810e505df08eac609c16c")
     private String code;
 
 

@@ -17,14 +17,13 @@ Tabela de conteúdo
    * [Tabela de Conteúdo](#tabela-de-conteúdo)
    * [Iniciar App](#iniciar-app)
    * [Utilização/documentação](#utilização-documentação)
-   * [Testes](#testes)
    * [Arquitetura](#arquitetura)
 <!--te-->
 
 Iniciar app
 =================
 
-	Iniciar banco de dados com docker-compose
+	Iniciar banco de dados e redis com docker-compose
 		na raiz do projeto
 		- executar docker-compose -f dc-pbr.yml up -d	
 
@@ -40,29 +39,27 @@ Utilização/documentação
 
 	- Após subir a aplicação, pode ser cadastrado um parquímetro com exemplo de curl abaixo:
         curl --location 'http://localhost:8001/parkingmeter' \
-        --header 'Content-Type: application/json' \
-        --data '{
-        "street":"Rua Leblon",
-        "number": 5,
-        "neighborhood":"Jardim São Vicente",
-        "city":"Embu",
-        "uf":"SP",
-        "zipcode":"06826-270"
-        }'
+		--header 'Content-Type: application/json' \
+		--data '{
+		    "street":"Rua Teodoro Sampaio",
+		    "number": 569,
+		    "neighborhood":"Pinheiros",
+		    "city":"São Paulo",
+		    "uf":"SP",
+		    "zipcode":"05405-050"
+		}'
 		
 	- Consulta todos os parquímetros com paginação, caso não sejam informados page e size os valores default são 10 e 0, respectivamente
-		curl --location 'http://localhost:8001/parkingmeter?size=1&page=1'
+		curl --location 'http://localhost:8001/parkingmeter?page=0&size=10'
 		
 	- Busca parquímetro por id
-		curl --location 'http://localhost:8001/parkingmeter/f679af614f1810e505df08eac609c16c' \
-        --data ''
-	
-Testes
-=================
-	Não foram implementados testes unitários
-	
+		curl --location 'http://localhost:8001/parkingmeter/09fabfea83a28f580de2b1cbda843112'
+
+	- Busca de endereço por cep
+		curl --location 'http://localhost:8001/parkingmeter/address?cep=06826290'
+
 
 Arquitetura
 =================
 
-<img src="arq_mongoteste.jpg">
+<img src="arq_parkingmeterbr.jpg">

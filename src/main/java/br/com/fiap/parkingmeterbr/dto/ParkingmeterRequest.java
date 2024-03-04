@@ -6,19 +6,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 import org.springframework.beans.BeanUtils;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingmeterRequest {
+public class ParkingmeterRequest implements Serializable{
 
-    @Schema(name = "street", type = "String", description = "Nome da rua", requiredMode = Schema.RequiredMode.AUTO ,example = "Rua Leblon")
+	private static final long serialVersionUID = 1L;
+
+	@Schema(name = "street", type = "String", description = "Nome da rua", requiredMode = Schema.RequiredMode.AUTO ,example = "Rua Leblon")
     @NotBlank
     @Size(max = 255)
     private String street;

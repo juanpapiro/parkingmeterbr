@@ -1,23 +1,23 @@
 package br.com.fiap.parkingmeterbr.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import br.com.fiap.parkingmeterbr.dto.AddressDto;
 import br.com.fiap.parkingmeterbr.dto.PageParkingmeterDto;
 import br.com.fiap.parkingmeterbr.dto.ParkingmeterDto;
 import br.com.fiap.parkingmeterbr.dto.ParkingmeterRequest;
+import br.com.fiap.parkingmeterbr.exception.ParkingmeterNotFoundException;
 import br.com.fiap.parkingmeterbr.model.Parkingmeter;
 import br.com.fiap.parkingmeterbr.repository.ParkingmeterRepository;
+import br.com.fiap.parkingmeterbr.service.CepService;
 import br.com.fiap.parkingmeterbr.service.ParkingmeterService;
-import com.google.common.hash.Hashing;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ParkingmeterServiceImpl implements ParkingmeterService {
@@ -25,42 +25,50 @@ public class ParkingmeterServiceImpl implements ParkingmeterService {
     @Autowired
     private ParkingmeterRepository parkingmeterRepository;
 
+    @Autowired
+    private CepService cepService;
 
+    
+    @Cacheable(value = "parkingmeter")
     @Override
-    public ResponseEntity<PageParkingmeterDto> findAllParkingmeters(Pageable pageable) {
+    public PageParkingmeterDto findAllParkingmeters(Pageable pageable) {
         Page<Parkingmeter> parkingmeters = parkingmeterRepository.findAll(pageable);
         return Optional.ofNullable(parkingmeters)
                 .filter(page -> !page.isEmpty())
                 .map(page -> ParkingmeterDto.toDtoList(page))
-                .map(listDto -> ResponseEntity.ok(listDto))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ParkingmeterNotFoundException("Nenhum parquímetro localizado."));
     }
 
+ 
+    @Cacheable(value = "parkingmeter")
     @Override
-    public ResponseEntity<ParkingmeterDto> findByCode(String code) {
-        return parkingmeterRepository.findByCode(code)
-                .map(p -> ResponseEntity.ok(ParkingmeterDto.toDto(p)))
-                .orElse(ResponseEntity.notFound().build());
+    public ParkingmeterDto findByCode(String code) {
+    	return parkingmeterRepository.findByCode(code)
+    			.map(ParkingmeterDto::toDto)
+    			.orElseThrow(() -> new ParkingmeterNotFoundException("Parquímetro não localizado."));
     }
 
 
     @Override
-    public ResponseEntity<ParkingmeterDto> createParkingmeter(ParkingmeterRequest request) {
+    public ParkingmeterDto createParkingmeter(ParkingmeterRequest request) {
         Parkingmeter parkingmeter = request.toEntity();
         parkingmeter.buildCode();
         parkingmeter.setDtCreate(LocalDateTime.now());
-        Object result = parkingmeterRepository.createParkingmeter(parkingmeter.getCode(),
+        Integer result = parkingmeterRepository.createParkingmeter(parkingmeter.getCode(),
                 parkingmeter.getStreet(), parkingmeter.getNumber(), parkingmeter.getZipcode(),
                 parkingmeter.getNeighborhood(), parkingmeter.getCity(), parkingmeter.getUf(), parkingmeter.getDtCreate());
-        return ResponseEntity.status(HttpStatus.CREATED).body(ParkingmeterDto.toDto(parkingmeter));
+        return Optional.ofNullable(result)
+        		.filter(rs -> rs.intValue() == 1)
+        		.map(rs -> ParkingmeterDto.toDto(parkingmeter))
+        		.orElseThrow(() -> new RuntimeException(""));
+    }
+
+    
+    @Override
+    public AddressDto findAddressByCep(String cep) {
+        return cepService.findAdrress(cep);
     }
 
 
-    private String buildHash(Parkingmeter parkingmeter) {
-        StringBuilder sb = new StringBuilder(parkingmeter.getStreet())
-                .append(parkingmeter.getZipcode())
-                .append(String.valueOf(parkingmeter.getNumber()));
-        return Hashing.hmacMd5(sb.toString().getBytes(StandardCharsets.UTF_8))
-                .hashString(sb.toString(), StandardCharsets.UTF_8).toString();
-    }
+
 }

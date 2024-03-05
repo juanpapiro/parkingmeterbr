@@ -22,47 +22,18 @@ services:
       - "6379:6379"
     networks:
       - appnetwork
-    # volumes:
-    #   - ./redis:/data
-    # volumes:
-    #   - redisparkbr:/root/redis
-    #   - redisparkbr:/usr/local/etc/redis/redis.conf
+#    volumes:
+#     - ./redis:/data
+#    volumes:
+#     - redisparkbr:/root/redis
+#     - redisparkbr:/usr/local/etc/redis/redis.conf
 
-
-  appparkingmeter:
-    container_name: app-parkingmeterbr
-    image: juanpapiro/parkingmeterbr:latest
-    restart: always
-    depends_on: 
-      - db
-      - redisparkbr
-    environment:
-      - spring.datasource.url=jdbc:postgresql://psql:5432/parkingmeter
-      - spring.datasource.username=postgres
-      - spring.datasource.password=root
-      - spring.jpa.hibernate.ddl-auto=update
-      - spring.jpa.properties.hibernate.show_sql=true
-      - spring.jpa.properties.hibernate.format_sql=true
-      - spring.cache.type=redis
-      - spring.data.redis.host=redisparkbr
-      - spring.data.redis.port=6379
-    ports:
-      - "8001:8001"
-    links:
-      - redisparkbr
-    networks:
-      - appnetwork
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
       
 
 networks:
-  postgresnetwork:
-    driver: bridge
   appnetwork:
     name: parkingnetwork
     driver: bridge
 
 volumes:
   vlpsqldb:
-  redisparkbr:

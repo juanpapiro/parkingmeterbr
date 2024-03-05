@@ -15,7 +15,8 @@ Tabela de conteúdo
 <!--ts-->
    * [Sobre](#Sobre)
    * [Tabela de Conteúdo](#tabela-de-conteúdo)
-   * [Iniciar App](#iniciar-app)
+   * [Iniciar App localmente](#iniciar-app-localmente)
+   * [Iniciar App apenas com imagens do docker hub](#Iniciar-App-apenas-com-imagens-do-docker-hub)
    * [Utilização/documentação](#utilização-documentação)
    * [Arquitetura](#arquitetura)
 <!--te-->
@@ -30,6 +31,19 @@ Iniciar app
 	Iniciar aplicação
 		- executar mvn spring-boot:run no diretório da aplicação (java 17)
 		- ou startar pela IDE
+
+
+Iniciar App apenas com imagens do docker hub
+=================
+
+	Iniciar banco de dados com docker-compose
+        na raiz do projeto
+        - executar docker-compose -f dc-init.yml up
+
+    Para finalizar os containers
+        no diretório raiz
+       - executar mantendo volumes: docker-compose -f dc-init.yml down -d
+       - executar removendo volumes: docker-compose -f dc-init.yml down -d -v
 
 
 Utilização/documentação

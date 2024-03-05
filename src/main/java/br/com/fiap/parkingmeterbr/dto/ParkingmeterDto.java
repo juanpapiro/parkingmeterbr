@@ -1,24 +1,24 @@
 package br.com.fiap.parkingmeterbr.dto;
 
-import br.com.fiap.parkingmeterbr.model.Parkingmeter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import lombok.*;
-import lombok.extern.jackson.Jacksonized;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+
+import br.com.fiap.parkingmeterbr.model.Parkingmeter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ParkingmeterDto extends ParkingmeterRequest implements Serializable{
 
 

@@ -4,6 +4,7 @@ import br.com.fiap.parkingmeterbr.dto.ErrorApi;
 import br.com.fiap.parkingmeterbr.dto.ErrorValidation;
 import br.com.fiap.parkingmeterbr.exception.ParkingmeterNotFoundException;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@Log4j2
 @ControllerAdvice
 public class ErrorHandlerConfig {
 
@@ -47,6 +49,7 @@ public class ErrorHandlerConfig {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorApi> handleErrorPK(Exception e) {
+        log.error(e);
         return ResponseEntity.internalServerError().build();
     }
 

@@ -3,6 +3,7 @@ package br.com.fiap.parkingmeterbr.service.impl;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import br.com.fiap.parkingmeterbr.repository.ParkingmeterRepository;
 import br.com.fiap.parkingmeterbr.service.CepService;
 import br.com.fiap.parkingmeterbr.service.ParkingmeterService;
 
+@Log4j2
 @Service
 public class ParkingmeterServiceImpl implements ParkingmeterService {
 
@@ -32,10 +34,14 @@ public class ParkingmeterServiceImpl implements ParkingmeterService {
     @Cacheable(value = "parkingmeter")
     @Override
     public PageParkingmeterDto findAllParkingmeters(Pageable pageable) {
+    	log.info("Buscando parquimetros: {}", pageable);
         Page<Parkingmeter> parkingmeters = parkingmeterRepository.findAll(pageable);
         return Optional.ofNullable(parkingmeters)
                 .filter(page -> !page.isEmpty())
-                .map(page -> ParkingmeterDto.toDtoList(page))
+                .map(page -> {
+                	log.info("Parquimetros localizados: {}", page.getTotalElements());
+                	return ParkingmeterDto.toDtoList(page);
+                })
                 .orElseThrow(() -> new ParkingmeterNotFoundException("Nenhum parquímetro localizado."));
     }
 
@@ -43,8 +49,12 @@ public class ParkingmeterServiceImpl implements ParkingmeterService {
     @Cacheable(value = "parkingmeter")
     @Override
     public ParkingmeterDto findByCode(String code) {
+    	log.info("Buscando parquimetro: {}", code);
     	return parkingmeterRepository.findByCode(code)
-    			.map(ParkingmeterDto::toDto)
+    			.map(parqkingmeter -> {
+    				log.info("Parquimetro localizado: {}", parqkingmeter);
+    				return ParkingmeterDto.toDto(parqkingmeter);
+    			})
     			.orElseThrow(() -> new ParkingmeterNotFoundException("Parquímetro não localizado."));
     }
 
@@ -54,9 +64,11 @@ public class ParkingmeterServiceImpl implements ParkingmeterService {
         Parkingmeter parkingmeter = request.toEntity();
         parkingmeter.buildCode();
         parkingmeter.setDtCreate(LocalDateTime.now());
+        log.info("*** Criando parquimetro: {}", parkingmeter);
         Integer result = parkingmeterRepository.createParkingmeter(parkingmeter.getCode(),
                 parkingmeter.getStreet(), parkingmeter.getNumber(), parkingmeter.getZipcode(),
                 parkingmeter.getNeighborhood(), parkingmeter.getCity(), parkingmeter.getUf(), parkingmeter.getDtCreate());
+        log.info("*** Parquimetro criado: {}", parkingmeter);
         return Optional.ofNullable(result)
         		.filter(rs -> rs.intValue() == 1)
         		.map(rs -> ParkingmeterDto.toDto(parkingmeter))

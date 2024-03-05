@@ -1,0 +1,22 @@
+server:
+  port: 8010
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/parkingmeter
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show_sql: true
+      format_sql: true
+
+  cache.type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+URL_FIND_ADDRESS_BY_CEP: https://viacep.com.br/ws/{cep}/json

@@ -41,19 +41,19 @@ Utilização/documentação
         curl --location 'http://localhost:8001/parkingmeter' \
 		--header 'Content-Type: application/json' \
 		--data '{
-		    "street":"Rua Teodoro Sampaio",
-		    "number": 569,
-		    "neighborhood":"Pinheiros",
-		    "city":"São Paulo",
-		    "uf":"SP",
-		    "zipcode":"05405-050"
+            "street":"Rua Cardeal Arcoverde",
+            "number": 700,
+            "neighborhood":"Pinheiros",
+            "city":"São Paulo",
+            "uf":"SP",
+            "zipcode":"05407-001"
 		}'
 		
 	- Consulta todos os parquímetros com paginação, caso não sejam informados page e size os valores default são 10 e 0, respectivamente
 		curl --location 'http://localhost:8001/parkingmeter?page=0&size=10'
 		
 	- Busca parquímetro por id
-		curl --location 'http://localhost:8001/parkingmeter/09fabfea83a28f580de2b1cbda843112'
+		curl --location 'http://localhost:8001/parkingmeter/ed8adb42606647a3df44d65e552dfbc6'
 
 	- Busca de endereço por cep
 		curl --location 'http://localhost:8001/parkingmeter/address?cep=06826290'

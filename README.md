@@ -17,7 +17,7 @@ Tabela de conteúdo
    * [Tabela de Conteúdo](#tabela-de-conteúdo)
    * [Iniciar App localmente](#iniciar-app-localmente)
    * [Iniciar App apenas com imagens do docker hub](#Iniciar-App-apenas-com-imagens-do-docker-hub)
-   * [Utilização/documentação](#utilização-documentação)
+   * [Utilização-documentação](#utilização-documentação)
    * [Arquitetura](#arquitetura)
 <!--te-->
 
@@ -46,7 +46,7 @@ Iniciar App apenas com imagens do docker hub
        - executar removendo volumes: docker-compose -f dc-init.yml down -d -v
 
 
-Utilização/documentação
+Utilização-documentação
 =================
 
     - Swagger acessível em http://localhost:8001/swagger-ui.html
@@ -76,4 +76,4 @@ Utilização/documentação
 Arquitetura
 =================
 
-<img src="arq_parkingmeterbr.jpg">
+<img src="arq_parkingmeterbr.png">

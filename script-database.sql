@@ -1,6 +1,7 @@
 CREATE DATABASE parkingmeter;
 
 
+
 --CREATE TABLE tbparkingmeters(
 --    id serial PRIMARY KEY,
 --	street VARCHAR(120) NOT NULL,
